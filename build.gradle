@@ -23,7 +23,6 @@ test {
 javafx {
     version = '14'
     modules = [ 'javafx.controls', 'javafx.fxml' ]
-    configuration = 'compileOnly'
 }
 
 mainClassName = 'app.App'
