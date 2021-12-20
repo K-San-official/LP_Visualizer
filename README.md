@@ -1,3 +1,7 @@
+![workflow](https://github.com/K-San-official/LP_Visualizer/actions/workflows/linux.yml/badge.svg)
+![workflow](https://github.com/K-San-official/LP_Visualizer/actions/workflows/windows.yml/badge.svg)
+![workflow](https://github.com/K-San-official/LP_Visualizer/actions/workflows/mac.yml/badge.svg)
+
 # LP_Visualizer
 
 ### Tech Stack
