@@ -12,8 +12,8 @@ public class LinearProgram
 
     public LinearProgram(double[][] coefficients)
     {
-        assert coefficients.length <= 3;
-        assert coefficients[0].length <= 3;
+        assert coefficients.length <= 4;
+        assert coefficients[0].length <= 4;
         A = new Basic2DMatrix(coefficients);
         M = new Basic2DMatrix(coefficients);
 
@@ -23,6 +23,11 @@ public class LinearProgram
     public double getElement(int row, int col)
     {
         return M.get(row, col);
+    }
+
+    public void setElement(int row, int col, double value)
+    {
+        M.set(row, col, value);
     }
 
     public int getRows()
