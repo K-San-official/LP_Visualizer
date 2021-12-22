@@ -31,10 +31,19 @@ public class LinearProgram
     public void addSlackVar(int row)
     {
         history.add(M.copy());
-        Vector v = BasicVector.zero(M.rows());
-        v.set(row, 1);
-        M = M.insertColumn(M.columns(), v);
-        System.out.println("print");
+        double[][] new_coef = new double[M.rows()][M.columns()+1];
+        double[][] old_coef = M.toDenseMatrix().toArray();
+
+        for(int i = 0; i < old_coef.length; i++)
+        {
+            for(int j = 0; j < old_coef[i].length; j++)
+            {
+                new_coef[i][j] = old_coef[i][j];
+            }
+        }
+
+        new_coef[0][3] = 1;  // TODO fix this so it actually puts the zero in the right place!
+        M = new Basic2DMatrix(new_coef);
     }
 
     public void scaleRow(int row, double value)

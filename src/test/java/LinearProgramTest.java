@@ -47,8 +47,11 @@ public class LinearProgramTest
         LinearProgram lp = new LinearProgram(coefficients);
 
         double[][] exp = {{1,2,3,1},{4,5,6,0},{7,8,9,0}};
-
+        System.out.println(lp.toString());
+        System.out.println();
         lp.addSlackVar(1);
+        System.out.println(lp.toString());
+
         assertEquals(4, lp.getColumns());
         assertEquals(3, lp.getRows());
 
