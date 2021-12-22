@@ -9,6 +9,7 @@ public class LinearProgramTest
     {
         double[][] coefficients = {{1,2,3},{4,5,6},{7,8,9}};
         LinearProgram lp = new LinearProgram(coefficients);
+
         for(int i = 0; i < coefficients.length; i++)
         {
             for(int j = 0; j < coefficients[i].length; j++)
@@ -40,4 +41,23 @@ public class LinearProgramTest
         }
     }
 
+    @Test void slack_variable()
+    {
+        double[][] coefficients = {{1,2,3},{4,5,6},{7,8,9}};
+        LinearProgram lp = new LinearProgram(coefficients);
+
+        double[][] exp = {{1,2,3,1},{4,5,6,0},{7,8,9,0}};
+
+        lp.addSlackVar(1);
+        assertEquals(4, lp.getColumns());
+        assertEquals(3, lp.getRows());
+
+        for(int i = 0; i < coefficients.length; i++)
+        {
+            for(int j = 0; j < coefficients[i].length; j++)
+            {
+                assertEquals(exp[i][j], lp.getElement(i,j));
+            }
+        }
+    }
 }
