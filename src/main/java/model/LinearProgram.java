@@ -1,9 +1,7 @@
 package model;
 
 import org.la4j.Matrix;
-import org.la4j.Vector;
 import org.la4j.matrix.dense.Basic2DMatrix;
-import org.la4j.vector.dense.BasicVector;
 
 import java.util.Stack;
 
@@ -42,7 +40,7 @@ public class LinearProgram
             }
         }
 
-        new_coef[0][3] = 1;  // TODO fix this so it actually puts the zero in the right place!
+        new_coef[row][M.columns()] = 1;
         M = new Basic2DMatrix(new_coef);
     }
 
@@ -93,10 +91,7 @@ public class LinearProgram
     private String h_line(int chars)
     {
         StringBuilder sb = new StringBuilder("\n----+");
-        for(int i = 0; i < chars-2; i++)
-        {
-            sb.append("-----+");
-        }
+        sb.append("-----+".repeat(Math.max(0, chars - 2)));
         sb.append("----\n");
         return sb.toString();
     }
