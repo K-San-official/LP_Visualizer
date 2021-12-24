@@ -4,9 +4,11 @@ import gui.scenes.MainScreen;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
@@ -48,13 +50,22 @@ public class MainGUI extends Application {
 
         // Sample buttons
         Button centerButton = new Button("Center");
-        Button topButton = new Button("Top");
+        Button topButton1 = new Button("Top1");
+        Button topButton2 = new Button("Top2");
+        Button topButton3 = new Button("Top3");
+        Button topButton4 = new Button("Top4");
         Button bottomButton = new Button("Bottom");
         Button leftButton = new Button("Left");
         Button rightButton = new Button("Right");
 
+        HBox topBox = new HBox();
+        topBox.getChildren().addAll(topButton1, topButton2, topButton3, topButton4);
+        topBox.setPadding(new Insets(15, 15, 15, 15));
+        topBox.setSpacing(15);
+        topBox.setStyle("-fx-background-color: #336699;");
+
         mainLayout.setCenter(centerButton);
-        mainLayout.setTop(topButton);
+        mainLayout.setTop(topBox);
         mainLayout.setBottom(bottomButton);
         mainLayout.setLeft(leftButton);
         mainLayout.setRight(rightButton);
