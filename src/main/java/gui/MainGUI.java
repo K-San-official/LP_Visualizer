@@ -1,14 +1,23 @@
 package gui;
 
+import gui.scenes.MainScreen;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
+/**
+ * This class handles the GUI for the whole program.
+ */
 public class MainGUI extends Application {
+
+    // Variables
+    int windowWidth = 800;
+    int windowHeight = 600;
 
     public void launchGUI() {
         String[] args = new String[0];
@@ -32,19 +41,26 @@ public class MainGUI extends Application {
      */
     @Override
     public void start(Stage primaryStage) {
-        primaryStage.setTitle("Hello World!");
-        Button btn = new Button();
-        btn.setText("Say 'Hello World'");
-        btn.setOnAction(new EventHandler<ActionEvent>() {
+        primaryStage.setTitle("LP Visualizer");
 
-            @Override
-            public void handle(ActionEvent event) {
-                System.out.println("Hello World!");
-            }
-        });
-        StackPane root = new StackPane();
-        root.getChildren().add(btn);
-        primaryStage.setScene(new Scene(root, 300, 250));
+        // Create layout to divide window
+        BorderPane mainLayout = new MainScreen();
+
+        // Sample buttons
+        Button centerButton = new Button("Center");
+        Button topButton = new Button("Top");
+        Button bottomButton = new Button("Bottom");
+        Button leftButton = new Button("Left");
+        Button rightButton = new Button("Right");
+
+        mainLayout.setCenter(centerButton);
+        mainLayout.setTop(topButton);
+        mainLayout.setBottom(bottomButton);
+        mainLayout.setLeft(leftButton);
+        mainLayout.setRight(rightButton);
+
+        // root.getChildren().add(btn);
+        primaryStage.setScene(new Scene(mainLayout, windowWidth, windowHeight));
         primaryStage.show();
     }
 }
