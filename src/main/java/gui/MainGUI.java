@@ -1,28 +1,24 @@
 package gui;
 
-import gui.menu.TopMenuBar;
-import gui.scenes.MainScreen;
+import gui.sceneLayouts.MainSceneLayout;
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.geometry.Insets;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 /**
- * This class handles the GUI for the whole program.
+ * This class handles the GUI for the whole program and represents the main window.
  */
 public class MainGUI extends Application {
 
     // Variables
+    MainSceneLayout mainSceneLayout;
+
     int windowWidth = 800;
     int windowHeight = 600;
 
+    /**
+     * Launches the GUI
+     */
     public void launchGUI() {
         String[] args = new String[0];
         launch(args);
@@ -45,17 +41,9 @@ public class MainGUI extends Application {
      */
     @Override
     public void start(Stage primaryStage) {
+
         primaryStage.setTitle("LP Visualizer");
-
-        // Create layout to divide window
-        BorderPane mainLayout = new MainScreen();
-
-        // Add top menu
-        TopMenuBar topMenuBar = new TopMenuBar();
-        VBox topMenuVBox = new VBox(topMenuBar);
-
-        // Add top menu to the main layout
-        mainLayout.setTop(topMenuVBox);
+        mainSceneLayout = new MainSceneLayout();
 
         /*
         // Sample buttons
@@ -83,7 +71,7 @@ public class MainGUI extends Application {
         // root.getChildren().add(btn);
          */
 
-        primaryStage.setScene(new Scene(mainLayout, windowWidth, windowHeight));
+        primaryStage.setScene(new Scene(mainSceneLayout, windowWidth, windowHeight));
         primaryStage.show();
     }
 }
