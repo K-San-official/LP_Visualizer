@@ -1,5 +1,6 @@
 package gui;
 
+import gui.menu.TopMenuBar;
 import gui.scenes.MainScreen;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -10,6 +11,7 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 /**
@@ -48,6 +50,14 @@ public class MainGUI extends Application {
         // Create layout to divide window
         BorderPane mainLayout = new MainScreen();
 
+        // Add top menu
+        TopMenuBar topMenuBar = new TopMenuBar();
+        VBox topMenuVBox = new VBox(topMenuBar);
+
+        // Add top menu to the main layout
+        mainLayout.setTop(topMenuVBox);
+
+        /*
         // Sample buttons
         Button centerButton = new Button("Center");
         Button topButton1 = new Button("Top1");
@@ -71,6 +81,8 @@ public class MainGUI extends Application {
         mainLayout.setRight(rightButton);
 
         // root.getChildren().add(btn);
+         */
+
         primaryStage.setScene(new Scene(mainLayout, windowWidth, windowHeight));
         primaryStage.show();
     }
