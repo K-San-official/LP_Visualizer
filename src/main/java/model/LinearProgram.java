@@ -44,10 +44,25 @@ public class LinearProgram
         M = new Basic2DMatrix(new_coef);
     }
 
-    public void scaleRow(int row, double value)
+    public void scaleRow(int row, double scalar)
     {
         history.add(M.copy());
-        // M.eachInRow();
+        for(int col = 0; col < M.columns(); col++)
+        {
+            double scaled = M.get(row, col) * scalar;
+            M.set(row, col, scaled);
+        }
+    }
+
+    public boolean isOptimal()
+    {
+        int row = 0;
+        for(int col = 0; col < getColumns()-1; col++)
+        {
+            if(M.get(row, col) < 0)
+                return false;
+        }
+        return true;
     }
 
     public double getElement(int row, int col)
