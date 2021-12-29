@@ -26,10 +26,10 @@ public class RatioTest
         double[][] coefficients = {{-1,-2, 3},
                                    { 4,10, 0},
                                    {-1,-2, 0}};
-        double[] rhs = {0,20,30};
+        double[] rhs = {0,2,30};
         LinearProgram lp = new LinearProgram(coefficients, sign, rhs);
 
-        Pivot exp = new Pivot(1, 1);
+        Pivot exp = new Pivot(1, 0);
         Pivot act = lp.ratioTest();
         assertEquals(exp, act);
     }
@@ -65,9 +65,9 @@ public class RatioTest
     @Test void ratio_test_optimal()
     {
         Inequality[] sign = {Inequality.EQUAL_TO, Inequality.LESS_THAN, Inequality.LESS_THAN};
-        double[][] coefficients = {{-1,-2, 3},
-                { 4,10, 0},
-                {-1,-2, 0}};
+        double[][] coefficients = {{ 1, 2, 3},
+                                   { 4,10, 0},
+                                   {-1,-2, 0}};
         double[] rhs = {0,20,30};
         LinearProgram lp = new LinearProgram(coefficients, sign, rhs);
 

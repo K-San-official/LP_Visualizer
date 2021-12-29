@@ -77,7 +77,26 @@ public class LinearProgram
 
     public Pivot ratioTest()
     {
-        return null;
+        double min_ratio = 10E10;
+        Pivot min_pivot = null;
+        for(int row = 1; row < M.rows(); row++)
+        {
+            double denominator = RHS.get(row);
+            for(int col = 0; col < M.columns(); col++)
+            {
+                double numerator = M.get(row, col);
+                if(numerator > 0 && M.get(0,col) < 0)
+                {
+                    double ratio = numerator/denominator;
+                    if(ratio < min_ratio)
+                    {
+                        min_ratio = ratio;
+                        min_pivot = new Pivot(row, col);
+                    }
+                }
+            }
+        }
+        return min_pivot;
     }
 
     public double getElement(int row, int col)
