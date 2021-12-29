@@ -10,3 +10,4 @@
 - Gradle
 - JavaFX
 - JZY3D (for the graphs)
+- la4j
