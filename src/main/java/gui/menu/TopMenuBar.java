@@ -33,6 +33,7 @@ public class TopMenuBar extends MenuBar {
         // --- File ---
         fileMenu = new Menu("File");
         newMenuItem = new MenuItem("New");
+        newMenuItem.setOnAction(e -> openInputWindow());
         saveMenuItem = new MenuItem("Save");
         openMenuItem = new MenuItem("Open");
         fileMenu.getItems().addAll(newMenuItem, saveMenuItem, openMenuItem);
@@ -48,5 +49,9 @@ public class TopMenuBar extends MenuBar {
         viewMenu.getItems().addAll(sizeMenuItem);
 
         this.getMenus().addAll(fileMenu, editMenu, viewMenu);
+    }
+
+    private void openInputWindow() {
+
     }
 }
