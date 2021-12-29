@@ -10,29 +10,25 @@ import java.util.Stack;
 public class LinearProgram
 {
     private Matrix M;
+    private Inequality[] sign;
     private Vector RHS;
-    private int decisionVars;
-    private int constraints;
-    private int slackVariables;
-    private Stack<Matrix> history;
+    private Stack<Matrix> M_history;
+    private Stack<Vector> RHS_history;
 
     public LinearProgram(double[][] coefficients, double[] rightHandSide)
     {
         assert coefficients.length <= 4;
         assert coefficients[0].length <= 4;
 
-        decisionVars = coefficients[0].length;
-        constraints = coefficients.length - 1;
-        slackVariables = 0;
-
         M = new Basic2DMatrix(coefficients);
         RHS = new BasicVector(rightHandSide);
-        history = new Stack<>();
+        M_history = new Stack<>();
+        RHS_history = new Stack<>();
     }
 
     public void addSlackVar(int slack_row)
     {
-        history.add(M.copy());
+        M_history.add(M.copy());
         double[][] new_coef = new double[M.rows()][M.columns()+1];
         double[][] old_coef = M.toDenseMatrix().toArray();
 
@@ -53,7 +49,7 @@ public class LinearProgram
 
     public void scaleRow(int row, double scalar)
     {
-        history.add(M.copy());
+        M_history.add(M.copy());
         for(int col = 0; col < M.columns(); col++)
         {
             double scaled = M.get(row, col) * scalar;
