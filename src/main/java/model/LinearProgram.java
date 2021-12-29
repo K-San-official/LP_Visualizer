@@ -75,6 +75,11 @@ public class LinearProgram
         return true;
     }
 
+    public Pivot ratioTest()
+    {
+        return null;
+    }
+
     public double getElement(int row, int col)
     {
         return M.get(row, col);
