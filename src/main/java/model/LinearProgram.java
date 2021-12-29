@@ -1,19 +1,22 @@
 package model;
 
 import org.la4j.Matrix;
+import org.la4j.Vector;
 import org.la4j.matrix.dense.Basic2DMatrix;
+import org.la4j.vector.dense.BasicVector;
 
 import java.util.Stack;
 
 public class LinearProgram
 {
     private Matrix M;
+    private Vector RHS;
     private int decisionVars;
     private int constraints;
     private int slackVariables;
     private Stack<Matrix> history;
 
-    public LinearProgram(double[][] coefficients)
+    public LinearProgram(double[][] coefficients, double[] rightHandSide)
     {
         assert coefficients.length <= 4;
         assert coefficients[0].length <= 4;
@@ -23,24 +26,28 @@ public class LinearProgram
         slackVariables = 0;
 
         M = new Basic2DMatrix(coefficients);
+        RHS = new BasicVector(rightHandSide);
         history = new Stack<>();
     }
 
-    public void addSlackVar(int row)
+    public void addSlackVar(int slack_row)
     {
         history.add(M.copy());
         double[][] new_coef = new double[M.rows()][M.columns()+1];
         double[][] old_coef = M.toDenseMatrix().toArray();
 
-        for(int i = 0; i < old_coef.length; i++)
+        // Adds all the old coefficients until the RHS of the matrix
+        for(int row = 0; row < old_coef.length; row++)
         {
-            for(int j = 0; j < old_coef[i].length; j++)
+            for(int col = 0; col < old_coef[row].length; col++)
             {
-                new_coef[i][j] = old_coef[i][j];
+                new_coef[row][col] = old_coef[row][col];
             }
         }
 
-        new_coef[row][M.columns()] = 1;
+        // Adds the slack variable coefficient
+        new_coef[slack_row][M.columns()] = 1;
+
         M = new Basic2DMatrix(new_coef);
     }
 
@@ -85,6 +92,11 @@ public class LinearProgram
         return M.columns();
     }
 
+    public void print()
+    {
+        System.out.println(toString());
+    }
+
     public String toString()
     {
 
@@ -94,11 +106,11 @@ public class LinearProgram
             for(int c = 0; c < M.columns(); c++)
             {
                 sb.append(M.get(r,c));
-                if(c != M.columns() -1)
-                    sb.append(" | ");
+                sb.append(" | ");
             }
-            if(r != M.rows() -1)
-                sb.append(h_line(M.columns()));
+
+            sb.append(RHS.get(r));
+            sb.append("\n");
         }
         return sb.toString();
     }

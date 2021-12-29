@@ -8,7 +8,8 @@ public class LinearProgramTest
     @Test void LP_creation()
     {
         double[][] coefficients = {{1,2,3},{4,5,6},{7,8,9}};
-        LinearProgram lp = new LinearProgram(coefficients);
+        double[] rhs = {10,20,30};
+        LinearProgram lp = new LinearProgram(coefficients, rhs);
 
         for(int i = 0; i < coefficients.length; i++)
         {
@@ -23,7 +24,8 @@ public class LinearProgramTest
     @Test void LP_modification()
     {
         double[][] coefficients = {{1,2,3},{4,5,6},{7,8,9}};
-        LinearProgram lp = new LinearProgram(coefficients);
+        double[] rhs = {10,20,30};
+        LinearProgram lp = new LinearProgram(coefficients, rhs);
 
         for(int i = 0; i < coefficients.length; i++)
         {
@@ -45,8 +47,9 @@ public class LinearProgramTest
     @Test void slack_variable()
     {
         double[][] coefficients = {{1,2,3},{4,5,6},{7,8,9}};
-        LinearProgram lp = new LinearProgram(coefficients);
-        double[][] exp = {{1,2,3,1},{4,5,6,0},{7,8,9,0}};
+        double[] rhs = {10,20,30};
+        LinearProgram lp = new LinearProgram(coefficients, rhs);
+        double[][] exp = {{1,2,3,0},{4,5,6,1},{7,8,9,0}};
 
         lp.addSlackVar(1);
 
@@ -65,8 +68,10 @@ public class LinearProgramTest
     @Test void scale_row_int_pos()
     {
         double[][] coefficients = {{1,2,3},{4,5,6},{7,8,9}};
+        double[] rhs = {10,20,30};
+        LinearProgram lp = new LinearProgram(coefficients, rhs);
+
         double[][] exp = {{2,4,6},{8,10,12},{14,16,18}};
-        LinearProgram lp = new LinearProgram(coefficients);
 
         lp.scaleRow(0, 2);
         lp.scaleRow(1, 2);
@@ -84,8 +89,10 @@ public class LinearProgramTest
     @Test void scale_row_frac_pos()
     {
         double[][] coefficients = {{1,2,3},{4,5,6},{7,8,9}};
+        double[] rhs = {10,20,30};
+        LinearProgram lp = new LinearProgram(coefficients, rhs);
+
         double[][] exp = {{0.5,1,1.5},{2,2.5,3},{3.5,4,4.5}};
-        LinearProgram lp = new LinearProgram(coefficients);
 
         lp.scaleRow(0, 0.5);
         lp.scaleRow(1, 0.5);
@@ -103,8 +110,10 @@ public class LinearProgramTest
     @Test void scale_row_int_neg()
     {
         double[][] coefficients = {{1,2,3},{4,5,6},{7,8,9}};
+        double[] rhs = {10,20,30};
+        LinearProgram lp = new LinearProgram(coefficients, rhs);
+
         double[][] exp = {{-2,-4,-6},{-8,-10,-12},{-14,-16,-18}};
-        LinearProgram lp = new LinearProgram(coefficients);
 
         lp.scaleRow(0, -2);
         lp.scaleRow(1, -2);
@@ -122,8 +131,10 @@ public class LinearProgramTest
     @Test void scale_row_frac_neg()
     {
         double[][] coefficients = {{1,2,3},{4,5,6},{7,8,9}};
+        double[] rhs = {10,20,30};
+        LinearProgram lp = new LinearProgram(coefficients, rhs);
+
         double[][] exp = {{-0.5,-1,-1.5},{-2,-2.5,-3},{-3.5,-4,-4.5}};
-        LinearProgram lp = new LinearProgram(coefficients);
 
         lp.scaleRow(0, -0.5);
         lp.scaleRow(1, -0.5);
@@ -141,28 +152,32 @@ public class LinearProgramTest
     @Test void optimal_true_pos()
     {
         double[][] coefficients = {{1,2,3},{4,5,6},{7,8,9}};
-        LinearProgram lp = new LinearProgram(coefficients);
+        double[] rhs = {10,20,30};
+        LinearProgram lp = new LinearProgram(coefficients, rhs);
         assertTrue(lp.isOptimal());
     }
 
     @Test void optimal_true_zeros()
     {
         double[][] coefficients = {{0,0,0},{4,5,6},{7,8,9}};
-        LinearProgram lp = new LinearProgram(coefficients);
+        double[] rhs = {10,20,30};
+        LinearProgram lp = new LinearProgram(coefficients, rhs);
         assertTrue(lp.isOptimal());
     }
 
     @Test void optimal_false_posRHS()
     {
         double[][] coefficients = {{-1,-0.5,10},{4,5,6},{7,8,9}};
-        LinearProgram lp = new LinearProgram(coefficients);
+        double[] rhs = {10,20,30};
+        LinearProgram lp = new LinearProgram(coefficients, rhs);
         assertFalse(lp.isOptimal());
     }
 
     @Test void optimal_false_negRHS()
     {
         double[][] coefficients = {{-1,-0.5,-10},{4,5,6},{7,8,9}};
-        LinearProgram lp = new LinearProgram(coefficients);
+        double[] rhs = {10,20,30};
+        LinearProgram lp = new LinearProgram(coefficients, rhs);
         assertFalse(lp.isOptimal());
     }
 }
