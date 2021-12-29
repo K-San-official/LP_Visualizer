@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class LinearProgramTest
 {
 
-    @Test void LP_creation()
+    @Test void LP_creation_correct()
     {
         double[][] coefficients = {{1,2,3},{4,5,6},{7,8,9}};
         Inequality[] sign = {Inequality.EQUAL_TO, Inequality.LESS_THAN, Inequality.LESS_THAN};
@@ -20,6 +20,26 @@ public class LinearProgramTest
                 assertEquals(coefficients[i][j], lp.getElement(i,j));
             }
         }
+    }
+
+    @Test void LP_creation_wrong_sign()
+    {
+        double[][] coefficients = {{1,2,3},{4,5,6},{7,8,9}};
+        Inequality[] sign = {Inequality.EQUAL_TO, Inequality.LESS_THAN};
+        double[] rhs = {10,20,30};
+
+        Throwable e = assertThrows(RuntimeException.class, ()-> new LinearProgram(coefficients, sign, rhs));
+        assertEquals("Linear Program: Sign, RightHandSide and number of rows must all be equal length", e.getMessage());
+    }
+
+    @Test void LP_creation_wrong_RHS()
+    {
+        double[][] coefficients = {{1,2,3},{4,5,6},{7,8,9}};
+        Inequality[] sign = {Inequality.EQUAL_TO, Inequality.LESS_THAN, Inequality.LESS_THAN};
+        double[] rhs = {10,20};
+
+        Throwable e = assertThrows(RuntimeException.class, ()-> new LinearProgram(coefficients, sign, rhs));
+        assertEquals("Linear Program: Sign, RightHandSide and number of rows must all be equal length", e.getMessage());
     }
 
 
