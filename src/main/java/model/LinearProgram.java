@@ -15,15 +15,19 @@ public class LinearProgram
     private Stack<Matrix> M_history;
     private Stack<Vector> RHS_history;
 
-    public LinearProgram(double[][] coefficients, double[] rightHandSide)
+    public LinearProgram(double[][] coefficients, Inequality[] sign, double[] rightHandSide)
     {
         assert coefficients.length <= 4;
         assert coefficients[0].length <= 4;
+        if(sign.length != rightHandSide.length || sign.length != coefficients.length || coefficients.length != rightHandSide.length)
+            throw new RuntimeException("Linear Program: Sign, RightHandSide and number of rows must all be equal length");
 
         M = new Basic2DMatrix(coefficients);
         RHS = new BasicVector(rightHandSide);
         M_history = new Stack<>();
         RHS_history = new Stack<>();
+
+        this.sign = sign;
     }
 
     public void addSlackVar(int slack_row)
@@ -55,6 +59,9 @@ public class LinearProgram
             double scaled = M.get(row, col) * scalar;
             M.set(row, col, scaled);
         }
+
+        RHS_history.add(RHS.copy());
+        RHS.set(row, RHS.get(row) * scalar);
     }
 
     public boolean isOptimal()
@@ -76,6 +83,11 @@ public class LinearProgram
     public void setElement(int row, int col, double value)
     {
         M.set(row, col, value);
+    }
+
+    public double getRHS(int row)
+    {
+        return RHS.get(row);
     }
 
     public int getRows()
@@ -105,6 +117,7 @@ public class LinearProgram
                 sb.append(" | ");
             }
 
+            sb.append(sign[r]);
             sb.append(RHS.get(r));
             sb.append("\n");
         }

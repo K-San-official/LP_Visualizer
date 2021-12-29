@@ -10,9 +10,9 @@ public enum Inequality
     {
         switch (this)
         {
-            case EQUAL_TO -> {return "=";}
-            case GREATER_THAN -> {return ">";}
-            case LESS_THAN -> {return "<";}
+            case EQUAL_TO -> {return "=  ";}
+            case GREATER_THAN -> {return ">= ";}
+            case LESS_THAN -> {return "<= ";}
         }
         return "0_0";
     }
