@@ -1,5 +1,6 @@
 package gui.menu;
 
+import gui.InputWindow;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
@@ -52,6 +53,6 @@ public class TopMenuBar extends MenuBar {
     }
 
     private void openInputWindow() {
-
+        InputWindow inputWindow = new InputWindow();
     }
 }
