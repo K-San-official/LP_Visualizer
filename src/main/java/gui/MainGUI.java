@@ -45,32 +45,6 @@ public class MainGUI extends Application {
         primaryStage.setTitle("LP Visualizer");
         mainSceneLayout = new MainSceneLayout();
 
-        /*
-        // Sample buttons
-        Button centerButton = new Button("Center");
-        Button topButton1 = new Button("Top1");
-        Button topButton2 = new Button("Top2");
-        Button topButton3 = new Button("Top3");
-        Button topButton4 = new Button("Top4");
-        Button bottomButton = new Button("Bottom");
-        Button leftButton = new Button("Left");
-        Button rightButton = new Button("Right");
-
-        HBox topBox = new HBox();
-        topBox.getChildren().addAll(topButton1, topButton2, topButton3, topButton4);
-        topBox.setPadding(new Insets(15, 15, 15, 15));
-        topBox.setSpacing(15);
-        topBox.setStyle("-fx-background-color: #336699;");
-
-        mainLayout.setCenter(centerButton);
-        mainLayout.setTop(topBox);
-        mainLayout.setBottom(bottomButton);
-        mainLayout.setLeft(leftButton);
-        mainLayout.setRight(rightButton);
-
-        // root.getChildren().add(btn);
-         */
-
         primaryStage.setScene(new Scene(mainSceneLayout, windowWidth, windowHeight));
         primaryStage.show();
     }
