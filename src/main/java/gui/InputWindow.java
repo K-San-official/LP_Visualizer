@@ -13,6 +13,8 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.UnaryOperator;
 import java.util.regex.Pattern;
 
@@ -24,6 +26,8 @@ import java.util.regex.Pattern;
 public class InputWindow extends Stage {
 
     // Variables
+    GridPane grid;
+    List<TextField> coefficientValues;
     int windowWidth = 700;
     int windowHeight = 400;
     double[][] tableau;
@@ -34,11 +38,12 @@ public class InputWindow extends Stage {
      * Constructor
      */
     public InputWindow() {
+        coefficientValues = new ArrayList<>();
         this.setTitle("Add new linear program");
         BorderPane borderPane = new BorderPane();
 
         HBox topRow = lpTopRow();
-        GridPane grid = lpGridLayout();
+        grid = lpGridLayout();
         borderPane.setTop(topRow);
         borderPane.setCenter(grid);
 
@@ -66,6 +71,7 @@ public class InputWindow extends Stage {
             System.out.println(numberDecisionVariables);
             System.out.println(numberConstraints);
             initTableauMatrix();
+            createInputGrid();
         });
         hBox.getChildren().addAll(
                 new Text("Decision Variables: "),
@@ -127,15 +133,61 @@ public class InputWindow extends Stage {
         Button testButton = new Button("Test");
         testButton.setOnAction(e -> System.out.println("Test worked"));
 
-        // Add text labels
-        gridPane.add(new Text("Maximize"), 0, 0);
-        gridPane.add(new Text("Subject to"), 0, 1);
-        gridPane.add(testButton, 1, 0);
-
         return gridPane;
     }
 
+    /**
+     * Initializes the new tableau based on the number of constraints and dec. variables.
+     */
     private void initTableauMatrix() {
-        tableau = new double[numberDecisionVariables][numberConstraints];
+        tableau = new double[numberDecisionVariables+1][numberConstraints+1];
+    }
+
+    /**
+     * Creates the content for the input grid.
+     */
+    private void createInputGrid() {
+        // Objective function
+        grid.add(new Text("Maximize"), 0, 0);
+        for (int i = 0; i < numberDecisionVariables; i++) {
+            TextField newTextField = new TextField("0");
+            newTextField.setPrefWidth(30);
+            coefficientValues.add(newTextField);
+            grid.add(newTextField, i * 3 + 1, 0);
+            grid.add(new Text("x" + (i + 1)), i * 3  + 2, 0);
+            if (i != numberConstraints - 1) {
+                grid.add(new Text("+"), i * 3 + 3, 0);
+            }
+        }
+
+        // Constraints
+        grid.add(new Text("Subject to"), 0, 1);
+        for (int j = 0; j < numberConstraints; j++) {
+            for (int i = 0; i < numberConstraints; i++) {
+                TextField newTextField = new TextField("0");
+                newTextField.setPrefWidth(30);
+                coefficientValues.add(newTextField);
+                grid.add(newTextField, i * 3 + 1, j + 1);
+                grid.add(new Text("x" + (i + 1)), i * 3  + 2,  j + 1);
+                if (i != numberConstraints - 1) {
+                    grid.add(new Text("+"), i * 3 + 3, j + 1);
+                }
+                else {
+                    grid.add(new Text("<="), i * 3 + 3, j + 1);
+                }
+            }
+            TextField newRHS = new TextField("0");
+            newRHS.setPrefWidth(30);
+            coefficientValues.add(newRHS);
+            grid.add(newRHS, numberDecisionVariables * 4, j + 1);
+        }
+
+        // Non-negative constraints
+        grid.add(new Text("and"), 0, numberConstraints + 1);
+        for (int i = 0; i < numberDecisionVariables; i++) {
+            grid.add(new Text("x" + (i + 1)), i + 1, numberConstraints + 1);
+        }
+        grid.add(new Text("<="), numberDecisionVariables + 1, numberConstraints + 1);
+        grid.add(new Text("0"), numberDecisionVariables + 2, numberConstraints + 1);
     }
 }
