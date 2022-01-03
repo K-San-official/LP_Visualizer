@@ -1,5 +1,6 @@
 package gui;
 
+import gui.menu.TopMenuBar;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -24,6 +25,8 @@ import java.util.regex.Pattern;
 public class InputWindow extends Stage {
 
     // Variables
+    private TopMenuBar topMenuBar;
+    private BorderPane borderPane;
     private GridPane grid;
     private List<TextField> tableauValueTextFields;
     private int windowWidth = 700;
@@ -35,26 +38,23 @@ public class InputWindow extends Stage {
     /**
      * Constructor
      */
-    public InputWindow() {
+    public InputWindow(TopMenuBar tmb) {
+        this.topMenuBar = tmb;
         this.setTitle("Add new linear program");
 
         // Crate root layout
-        BorderPane borderPane = new BorderPane();
+        borderPane = new BorderPane();
 
         // Create top row
         HBox topRow = lpTopRow();
         tableauValueTextFields = new ArrayList<>();
         borderPane.setTop(topRow);
 
-        // Create main grid
-        grid = lpGridLayout();
-        borderPane.setCenter(grid);
-
         // Create save button at the bottom
         Button saveButton = new Button("Save LP");
         saveButton.setOnAction(e -> {
             fillTableauMatrix();
-            printTableau();
+            setTableau();
         });
         borderPane.setBottom(saveButton);
 
@@ -76,11 +76,26 @@ public class InputWindow extends Stage {
 
         Button setTableauButton = new Button("Set");
         setTableauButton.setOnAction(e -> {
-            numberDecisionVariables = Integer.parseInt(decVarField.getCharacters().toString());
-            numberConstraints = Integer.parseInt(constrField.getCharacters().toString());
-            tableau = null;
-            initTableauMatrix();
-            createInputGrid();
+            int tempNumberDecisionVariables = Integer.parseInt(decVarField.getCharacters().toString());
+            int tempNumberConstraints = Integer.parseInt(constrField.getCharacters().toString());
+
+            if (tempNumberDecisionVariables >= 1 &&
+                    tempNumberDecisionVariables <= 3 &&
+                    tempNumberConstraints >= 1 &&
+                    tempNumberConstraints <= 7) {
+                numberDecisionVariables = tempNumberDecisionVariables;
+                numberConstraints = tempNumberConstraints;
+                tableau = null;
+                tableauValueTextFields.clear();
+                grid = lpGridLayout();
+                borderPane.setCenter(grid);
+                initTableauMatrix();
+                createInputGrid();
+            }
+            else {
+                System.out.println("Invalid tableau size!");
+                // TODO: Add notification window
+            }
         });
         hBox.getChildren().addAll(
                 new Text("Decision Variables: "),
@@ -139,8 +154,6 @@ public class InputWindow extends Stage {
         gridPane.setHgap(10);
         gridPane.setVgap(10);
         gridPane.setPadding(new Insets(10, 10, 0, 10));
-        Button testButton = new Button("Test");
-        testButton.setOnAction(e -> System.out.println("Test worked"));
         return gridPane;
     }
 
@@ -148,7 +161,7 @@ public class InputWindow extends Stage {
      * Initializes the new tableau based on the number of constraints and dec. variables.
      */
     private void initTableauMatrix() {
-        tableau = new double[numberDecisionVariables+1][numberConstraints+1];
+        tableau = new double[numberConstraints+1][numberDecisionVariables+1];
     }
 
     private void fillTableauMatrix() {
@@ -157,8 +170,10 @@ public class InputWindow extends Stage {
 
         for (int i = 0; i < tableau.length; i++) {
             for (int j = 0; j < tableau[i].length; j++) {
-                if (!(i == 0 && j == numberDecisionVariables))
+                if (!(i == 0 && j == numberDecisionVariables)) {
                     tableau[i][j] = Double.parseDouble(tableauValueTextFields.get(count).getCharacters().toString());
+                    count++;
+                }
                 else
                     tableau[i][j] = 0;
             }
@@ -166,6 +181,7 @@ public class InputWindow extends Stage {
     }
 
     private void printTableau() {
+        System.out.println("--- Tableau: ---");
         for (int i = 0; i < tableau.length; i++) {
             for (int j = 0; j < tableau[i].length; j++) {
                 System.out.print("[" + tableau[i][j] + "] ");
@@ -178,15 +194,17 @@ public class InputWindow extends Stage {
      * Creates the content for the input grid.
      */
     private void createInputGrid() {
+        int prefWidth = 50;
+
         // Objective function
         grid.add(new Text("Maximize"), 0, 0);
         for (int i = 0; i < numberDecisionVariables; i++) {
             TextField newTextField = new TextField("0");
-            newTextField.setPrefWidth(30);
+            newTextField.setPrefWidth(prefWidth);
             tableauValueTextFields.add(newTextField);
             grid.add(newTextField, i * 3 + 1, 0);
             grid.add(new Text("x" + (i + 1)), i * 3  + 2, 0);
-            if (i != numberConstraints - 1) {
+            if (i != numberDecisionVariables - 1) {
                 grid.add(new Text("+"), i * 3 + 3, 0);
             }
         }
@@ -194,9 +212,9 @@ public class InputWindow extends Stage {
         // Constraints
         grid.add(new Text("Subject to"), 0, 1);
         for (int j = 0; j < numberConstraints; j++) {
-            for (int i = 0; i < numberConstraints; i++) {
+            for (int i = 0; i < numberDecisionVariables; i++) {
                 TextField newTextField = new TextField("0");
-                newTextField.setPrefWidth(30);
+                newTextField.setPrefWidth(prefWidth);
                 tableauValueTextFields.add(newTextField);
                 grid.add(newTextField, i * 3 + 1, j + 1);
                 grid.add(new Text("x" + (i + 1)), i * 3  + 2,  j + 1);
@@ -208,7 +226,7 @@ public class InputWindow extends Stage {
                 }
             }
             TextField newRHS = new TextField("0");
-            newRHS.setPrefWidth(30);
+            newRHS.setPrefWidth(prefWidth);
             tableauValueTextFields.add(newRHS);
             grid.add(newRHS, numberDecisionVariables * 4, j + 1);
         }
@@ -218,11 +236,15 @@ public class InputWindow extends Stage {
         for (int i = 0; i < numberDecisionVariables; i++) {
             grid.add(new Text("x" + (i + 1)), i + 1, numberConstraints + 1);
         }
-        grid.add(new Text("<="), numberDecisionVariables + 1, numberConstraints + 1);
+        grid.add(new Text(">="), numberDecisionVariables + 1, numberConstraints + 1);
         grid.add(new Text("0"), numberDecisionVariables + 2, numberConstraints + 1);
     }
 
     public double[][] getTableau() {
         return tableau;
+    }
+
+    public void setTableau() {
+        topMenuBar.mainSceneLayout.mainGUI.setTableau(tableau);
     }
 }

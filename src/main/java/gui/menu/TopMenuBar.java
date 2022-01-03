@@ -1,6 +1,7 @@
 package gui.menu;
 
 import gui.InputWindow;
+import gui.sceneLayouts.MainSceneLayout;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
@@ -11,6 +12,7 @@ import javafx.scene.control.MenuItem;
 public class TopMenuBar extends MenuBar {
 
     // Variables
+    public MainSceneLayout mainSceneLayout;
 
     // --- File ---
     Menu fileMenu;
@@ -29,7 +31,8 @@ public class TopMenuBar extends MenuBar {
     /**
      * Constructor
      */
-    public TopMenuBar() {
+    public TopMenuBar(MainSceneLayout mcl) {
+        this.mainSceneLayout = mcl;
 
         // --- File ---
         fileMenu = new Menu("File");
@@ -53,6 +56,8 @@ public class TopMenuBar extends MenuBar {
     }
 
     private void openInputWindow() {
-        InputWindow inputWindow = new InputWindow();
+        InputWindow inputWindow = new InputWindow(this);
     }
+
+
 }

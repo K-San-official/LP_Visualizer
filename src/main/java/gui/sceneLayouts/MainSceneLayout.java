@@ -1,5 +1,6 @@
 package gui.sceneLayouts;
 
+import gui.MainGUI;
 import gui.menu.TopMenuBar;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -13,9 +14,14 @@ import javafx.scene.layout.VBox;
  */
 public class MainSceneLayout extends BorderPane {
 
-    public MainSceneLayout() {
+    // Variables
+    public MainGUI mainGUI;
+
+    public MainSceneLayout(MainGUI mGUI) {
+        this.mainGUI = mGUI;
+
         // Add top menu
-        TopMenuBar topMenuBar = new TopMenuBar();
+        TopMenuBar topMenuBar = new TopMenuBar(this);
         VBox topMenuVBox = new VBox(topMenuBar);
         this.setTop(topMenuVBox);
 

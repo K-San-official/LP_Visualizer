@@ -11,8 +11,9 @@ import javafx.stage.Stage;
 public class MainGUI extends Application {
 
     // Variables
+    public static final boolean DEBUG = false;
+    double[][] currentTableau;
     MainSceneLayout mainSceneLayout;
-
     int windowWidth = 800;
     int windowHeight = 600;
 
@@ -43,9 +44,36 @@ public class MainGUI extends Application {
     public void start(Stage primaryStage) {
 
         primaryStage.setTitle("LP Visualizer");
-        mainSceneLayout = new MainSceneLayout();
+        mainSceneLayout = new MainSceneLayout(this);
 
         primaryStage.setScene(new Scene(mainSceneLayout, windowWidth, windowHeight));
         primaryStage.show();
+    }
+
+    public void setTableau(double[][] tableau) {
+        currentTableau = tableau;
+        if (DEBUG)
+            printTableau();
+    }
+
+    /**
+     * Setter
+     */
+    private void printTableau() {
+        System.out.println("--- Tableau: ---");
+        for (int i = 0; i < currentTableau.length; i++) {
+            for (int j = 0; j < currentTableau[i].length; j++) {
+                System.out.print("[" + currentTableau[i][j] + "] ");
+            }
+            System.out.print("\n");
+        }
+    }
+
+    /**
+     * Getter
+     * @return
+     */
+    public double[][] getTableau() {
+        return currentTableau;
     }
 }
